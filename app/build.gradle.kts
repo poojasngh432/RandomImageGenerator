@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.kotlinx.serialization.plugin)
 }
 
 android {
@@ -10,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.poojasinghandroid.randomimagegenerator"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -37,13 +41,12 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+    kapt {
+        correctErrorTypes = true
     }
 }
 
 dependencies {
-
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
     implementation(libs.coil.compose)
@@ -58,8 +61,15 @@ dependencies {
     testImplementation(libs.junit.test)
     testImplementation(libs.junit.engine)
     testImplementation(libs.coroutine)
-
-    implementation(libs.androidx.appcompat)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.ext.work) {
+        exclude(group = "androidx.work", module = "work-runtime")
+    }
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.workmanager)
+    implementation(libs.datastore)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
